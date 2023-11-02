@@ -9,7 +9,9 @@ export interface Todo {
 
 export const todosState = atom<Todo[]>({
   key: "todoState",
-  default: [],
+  default: localStorage.getItem("todos")
+    ? JSON.parse(localStorage.getItem("todos")!)
+    : [],
 });
 
 export const isTodoEditState = atom({
