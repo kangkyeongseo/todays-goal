@@ -3,15 +3,28 @@ import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { Todo, todosState } from "../../atom";
 
-const Progress = styled.div`
-  width: 300px;
-  height: 20px;
-  border: 1px solid;
+const ProgressContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 30px;
+  background-color: #1b9cfc;
 `;
 
-const ProgressBar = styled.div`
-  height: 20px;
-  background-color: black;
+const Progress = styled.div`
+  width: 100%;
+  height: 15px;
+  position: relative;
+  overflow: hidden;
+  border: none;
+  border-radius: 15px;
+  background-color: #fff;
+`;
+
+const ProgressBar = styled.div<{ $progress: number }>`
+  width: ${(props) => `${100 * props.$progress}%`};
+  height: inherit;
+  background-color: #116fb8;
   transition: all 1s ease-in-out;
 `;
 
@@ -24,16 +37,13 @@ function TodoProgress() {
     setCheckedTodos(newCheckedTodos);
   }, [todos]);
   return (
-    <Progress>
-      <ProgressBar
-        style={{
-          width:
-            todos.length !== 0
-              ? `${300 * (checkedTodos.length / todos.length)}px`
-              : "0px",
-        }}
-      />
-    </Progress>
+    <ProgressContainer>
+      <Progress>
+        <ProgressBar
+          $progress={todos.length > 0 ? checkedTodos.length / todos.length : 0}
+        />
+      </Progress>
+    </ProgressContainer>
   );
 }
 

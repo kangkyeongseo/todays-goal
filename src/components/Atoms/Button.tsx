@@ -1,14 +1,25 @@
+import styled from "styled-components";
+
 export interface ButtonProp {
   buttonValue: string;
   onClick?: () => void;
   disabled?: boolean;
 }
 
+const ButtonContainer = styled.button`
+  color: white;
+  background-color: #777;
+  border: none;
+  &:hover {
+    background-color: #666;
+  }
+`;
+
 function Button({ buttonValue, onClick, disabled = false }: ButtonProp) {
   return (
-    <button onClick={onClick} disabled={disabled}>
+    <ButtonContainer onClick={onClick} disabled={disabled}>
       {buttonValue}
-    </button>
+    </ButtonContainer>
   );
 }
 

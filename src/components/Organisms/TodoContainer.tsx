@@ -1,10 +1,18 @@
 import { useEffect } from "react";
+import styled from "styled-components";
 import { useRecoilValue } from "recoil";
 import { isTodoEditState, todosState } from "../../atom";
 import useLocalStorage from "../../libs/useLocalStorage";
 import TodoForm from "../Molecules/TodoForm";
 import TodoLists from "../Molecules/TodoLists";
 import TodoProgress from "../Molecules/TodoProgress";
+
+const Container = styled.div`
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 70px 50px auto;
+`;
 
 function TodoContainer() {
   const { setLocalStorage } = useLocalStorage({ key: "todos" });
@@ -18,11 +26,11 @@ function TodoContainer() {
   }, [todos]);
 
   return (
-    <div>
+    <Container>
       <TodoProgress />
-      <TodoLists />
       <TodoForm />
-    </div>
+      <TodoLists />
+    </Container>
   );
 }
 

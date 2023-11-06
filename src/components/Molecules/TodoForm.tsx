@@ -1,8 +1,19 @@
 import React, { useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import styled from "styled-components";
 import Button from "../Atoms/Button";
 import Input from "../Atoms/Input";
 import { isTodoEditState, todosState } from "../../atom";
+
+const Form = styled.form`
+  display: grid;
+  grid-template-columns: 5fr 1fr;
+  height: 50px;
+  input {
+    color: white;
+    background-color: #555;
+  }
+`;
 
 function TodoForm() {
   const [newTodo, setNewTodo] = useState("");
@@ -18,18 +29,20 @@ function TodoForm() {
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setTodos((pre) => [
-      ...pre,
-      { id: Date.now(), content: newTodo, isChecked: false, isEdited: false },
-    ]);
+    if (newTodo.length > 0) {
+      setTodos((pre) => [
+        ...pre,
+        { id: Date.now(), content: newTodo, isChecked: false, isEdited: false },
+      ]);
+    }
     setNewTodo("");
   };
 
   return (
-    <form onSubmit={onSubmit}>
+    <Form onSubmit={onSubmit}>
       <Input type={"string"} inputValue={newTodo} onChange={onChange} />
       <Button buttonValue={"추가하기"} disabled={isTodoEdit} />
-    </form>
+    </Form>
   );
 }
 

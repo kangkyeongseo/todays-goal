@@ -31,6 +31,7 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
+	background-color: rgba(0,0,0,0.1);
 }
 ol, ul {
 	list-style: none;
@@ -46,6 +47,9 @@ q:before, q:after {
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
+}
+* {
+	box-sizing: border-box;
 }`;
 
 const root = ReactDOM.createRoot(

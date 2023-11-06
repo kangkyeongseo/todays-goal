@@ -1,13 +1,27 @@
 import { useState } from "react";
+import { useRecoilState } from "recoil";
+import styled from "styled-components";
 import { Todo, isTodoEditState, todosState } from "../../atom";
 import Span from "../Atoms/Span";
-import { useRecoilState } from "recoil";
 import Input from "../Atoms/Input";
-import Button from "../Atoms/Button";
+import CheckButton from "../Atoms/CheckButton";
+import DeleteButton from "../Atoms/DeleteButton";
+import EditButton from "../Atoms/EditButton";
 
 interface TodoListProp {
   todo: Todo;
 }
+
+const TodoListContainer = styled.li<{ $isTodoEdit: boolean }>`
+  display: grid;
+  grid-template-columns: 1fr 10fr 1fr 1fr;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+  &:hover {
+    background-color: ${(props) => !props.$isTodoEdit && "rgba(0,0,0,0.05)"};
+  }
+`;
 
 function TodoList({ todo }: TodoListProp) {
   const [editTodo, setEditTodo] = useState("");
@@ -56,33 +70,29 @@ function TodoList({ todo }: TodoListProp) {
     setTodos(newTodos);
   };
   return (
-    <li>
+    <TodoListContainer $isTodoEdit={isTodoEdit}>
+      <CheckButton
+        isChecked={todo.isChecked}
+        onClick={() => onCheckButtonClick(todo)}
+        disabled={isTodoEdit}
+      />
       {todo.isEdited ? (
         <>
           <Input type={"text"} inputValue={editTodo} onChange={onEditChange} />
-          <Button buttonValue={"수정완료"} onClick={() => onEndEdit(todo)} />
+          <EditButton onClick={() => onEndEdit(todo)} />
         </>
       ) : (
         <>
-          <Span text={todo.content} />
-          <Button
-            buttonValue={todo.isChecked ? "미완료하기" : "완료하기"}
-            onClick={() => onCheckButtonClick(todo)}
-            disabled={isTodoEdit}
-          />
-          <Button
-            buttonValue={"수정하기"}
-            onClick={() => onStartEdit(todo)}
-            disabled={isTodoEdit}
-          />
-          <Button
-            buttonValue={"삭제"}
-            onClick={() => onDeleteButtonClick(todo.id)}
-            disabled={isTodoEdit}
-          />
+          <Span text={todo.content} isChecked={todo.isChecked} />
+          <EditButton onClick={() => onStartEdit(todo)} disabled={isTodoEdit} />
         </>
       )}
-    </li>
+
+      <DeleteButton
+        onClick={() => onDeleteButtonClick(todo.id)}
+        disabled={isTodoEdit}
+      />
+    </TodoListContainer>
   );
 }
 
