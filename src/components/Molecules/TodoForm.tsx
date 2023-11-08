@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Button from "../Atoms/Button";
 import Input from "../Atoms/Input";
 import { isTodoEditState, todosState } from "../../atom";
+import { useTodoDispatch } from "../../TodoContext";
 
 const Form = styled.form`
   display: grid;
@@ -19,6 +20,7 @@ function TodoForm() {
   const [newTodo, setNewTodo] = useState("");
   const setTodos = useSetRecoilState(todosState);
   const isTodoEdit = useRecoilValue(isTodoEditState);
+  const dispatch = useTodoDispatch();
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -36,6 +38,15 @@ function TodoForm() {
       ]);
     }
     setNewTodo("");
+    dispatch({
+      type: "ADD_TODO",
+      todo: {
+        id: Date.now(),
+        content: newTodo,
+        isChecked: false,
+        isEdited: false,
+      },
+    });
   };
 
   return (

@@ -7,6 +7,7 @@ import Input from "../Atoms/Input";
 import CheckButton from "../Atoms/CheckButton";
 import DeleteButton from "../Atoms/DeleteButton";
 import EditButton from "../Atoms/EditButton";
+import { useTodoDispatch } from "../../TodoContext";
 
 interface TodoListProp {
   todo: Todo;
@@ -27,6 +28,7 @@ function TodoList({ todo }: TodoListProp) {
   const [editTodo, setEditTodo] = useState("");
   const [isTodoEdit, setIsTodoEdit] = useRecoilState(isTodoEditState);
   const [todos, setTodos] = useRecoilState(todosState);
+  const dispatch = useTodoDispatch();
 
   const onEditChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEditTodo(event.target.value);
@@ -65,9 +67,10 @@ function TodoList({ todo }: TodoListProp) {
     setIsTodoEdit((pre) => !pre);
   };
 
-  const onDeleteButtonClick = (id: number) => {
-    const newTodos = todos.filter((todo) => todo.id !== id);
+  const onDeleteButtonClick = (selectedTodo: Todo) => {
+    const newTodos = todos.filter((todo) => todo.id !== selectedTodo.id);
     setTodos(newTodos);
+    dispatch({ type: "Delete_TODO", todo: selectedTodo });
   };
   return (
     <TodoListContainer $isTodoEdit={isTodoEdit}>
@@ -89,7 +92,7 @@ function TodoList({ todo }: TodoListProp) {
       )}
 
       <DeleteButton
-        onClick={() => onDeleteButtonClick(todo.id)}
+        onClick={() => onDeleteButtonClick(todo)}
         disabled={isTodoEdit}
       />
     </TodoListContainer>

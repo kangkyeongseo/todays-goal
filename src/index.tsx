@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { createGlobalStyle } from "styled-components";
 import { RecoilRoot } from "recoil";
 import App from "./App";
+import TodoContext from "./TodoContext";
 
 const GlobalStyle = createGlobalStyle`tml, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -56,10 +57,10 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
-  <React.StrictMode>
-    <RecoilRoot>
+  <RecoilRoot>
+    <TodoContext>
       <GlobalStyle />
       <App />
-    </RecoilRoot>
-  </React.StrictMode>
+    </TodoContext>
+  </RecoilRoot>
 );
